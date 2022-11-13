@@ -8,12 +8,12 @@ import { Input } from "../components/Input";
 import * as WebBrowser from "expo-web-browser";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../firebase.config";
-import { AuthProvider, useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 WebBrowser.maybeCompleteAuthSession();
 initializeApp(firebaseConfig);
 
-const LoginScreen = () => {
+export const LoginScreen = () => {
   const { signInWithGoogle, isLoggingIn } = useAuth();
 
   return (
@@ -95,13 +95,5 @@ const LoginScreen = () => {
         </Button>
       </Box>
     </KeyboardAvoidingView>
-  );
-};
-
-export const Login: React.FC = () => {
-  return (
-    <AuthProvider>
-      <LoginScreen />
-    </AuthProvider>
   );
 };

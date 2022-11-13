@@ -23,6 +23,7 @@ interface AuthContextProps {
   userInfo: IUser;
   signInWithGoogle: () => Promise<void>;
   isLoggingIn: boolean;
+  signOut: () => void;
 }
 
 const AuthContext = createContext({} as AuthContextProps);
@@ -42,6 +43,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   async function signInWithGoogle() {
     setIsLoggingIn(true);
     promptAsync();
+  }
+
+  async function signOut() {
+    setUser({} as IUser);
   }
 
   useEffect(() => {
@@ -77,6 +82,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         userInfo: user,
         signInWithGoogle,
         isLoggingIn,
+        signOut,
       }}
     >
       {children}
