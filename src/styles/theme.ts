@@ -30,7 +30,7 @@ export const theme = extendTheme({
         normal: "Barlow_500Medium",
       },
       600: {
-        normal: "Barlow_600Semibold",
+        normal: "Barlow_600SemiBold",
       },
       700: {
         normal: "Barlow_700Bold",

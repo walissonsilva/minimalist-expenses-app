@@ -24,13 +24,16 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <ButtonNativeBase
       {...props}
-      borderWidth={type === "outline" ? 1 : 0}
-      borderColor={type === "outline" ? "primary.500" : "transparent"}
+      borderWidth={1}
+      borderColor={type === "outline" ? "primary.500" : getBackground()}
       backgroundColor={getBackground()}
       _text={{
         textTransform: "uppercase",
         fontWeight: 700,
         color: type === "outline" ? "primary.500" : "white",
+      }}
+      _loading={{
+        _spinner: { color: type === "outline" ? "gray.600" : "white" },
       }}
     >
       {children}
