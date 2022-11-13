@@ -31,6 +31,7 @@ export function AppRoutes() {
               name="home"
               {...props}
               color={props.focused ? theme.colors.primary[500] : props.color}
+              size={props.size - 3}
             />
           ),
           tabBarLabel: (props) => (
@@ -55,6 +56,7 @@ export function AppRoutes() {
               name="list"
               {...props}
               color={props.focused ? theme.colors.primary[500] : props.color}
+              size={props.size - 3}
             />
           ),
           tabBarLabel: (props) => (
@@ -79,6 +81,7 @@ export function AppRoutes() {
               name="bar-chart-2"
               {...props}
               color={props.focused ? theme.colors.primary[500] : props.color}
+              size={props.size - 3}
             />
           ),
           tabBarLabel: (props) => (
@@ -103,6 +106,7 @@ export function AppRoutes() {
               name="user"
               {...props}
               color={props.focused ? theme.colors.primary[500] : props.color}
+              size={props.size - 3}
             />
           ),
           tabBarLabel: (props) => (
