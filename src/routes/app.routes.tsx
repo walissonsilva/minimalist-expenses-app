@@ -6,6 +6,7 @@ import { LoginScreen } from "../screens/Login";
 import Feather from "react-native-vector-icons/Feather";
 import { useTheme } from "native-base";
 import { Text } from "react-native";
+import { ExpensesScreen } from "../screens/Expenses";
 
 const Tab = createBottomTabNavigator();
 
@@ -24,14 +25,14 @@ export function AppRoutes() {
         },
       }}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{
           tabBarIcon: (props) => (
             <Feather
               name="home"
               {...props}
               color={props.focused ? theme.colors.primary[500] : props.color}
-              size={props.size - 3}
+              size={props.size - 2}
             />
           ),
           tabBarLabel: (props) => (
@@ -48,22 +49,22 @@ export function AppRoutes() {
         }}
         name="Home"
         component={HomeScreen}
-      />
+      /> */}
       <Tab.Screen
         options={{
           tabBarIcon: (props) => (
             <Feather
               name="list"
               {...props}
-              color={props.focused ? theme.colors.primary[500] : props.color}
-              size={props.size - 3}
+              color={props.focused ? theme.colors.emerald[500] : props.color}
+              size={props.size - 2}
             />
           ),
           tabBarLabel: (props) => (
             <Text
               {...props}
               style={{
-                color: props.focused ? theme.colors.primary[500] : props.color,
+                color: props.focused ? theme.colors.emerald[500] : props.color,
                 fontSize: 11,
               }}
             >
@@ -72,7 +73,7 @@ export function AppRoutes() {
           ),
         }}
         name="Lançamentos"
-        component={HomeScreen}
+        component={ExpensesScreen}
       />
       <Tab.Screen
         options={{
@@ -80,15 +81,15 @@ export function AppRoutes() {
             <Feather
               name="bar-chart-2"
               {...props}
-              color={props.focused ? theme.colors.primary[500] : props.color}
-              size={props.size - 3}
+              color={props.focused ? theme.colors.emerald[500] : props.color}
+              size={props.size - 2}
             />
           ),
           tabBarLabel: (props) => (
             <Text
               {...props}
               style={{
-                color: props.focused ? theme.colors.primary[500] : props.color,
+                color: props.focused ? theme.colors.emerald[500] : props.color,
                 fontSize: 11,
               }}
             >
@@ -105,15 +106,15 @@ export function AppRoutes() {
             <Feather
               name="user"
               {...props}
-              color={props.focused ? theme.colors.primary[500] : props.color}
-              size={props.size - 3}
+              color={props.focused ? theme.colors.emerald[500] : props.color}
+              size={props.size - 2}
             />
           ),
           tabBarLabel: (props) => (
             <Text
               {...props}
               style={{
-                color: props.focused ? theme.colors.primary[500] : props.color,
+                color: props.focused ? theme.colors.emerald[500] : props.color,
                 fontSize: 11,
               }}
             >

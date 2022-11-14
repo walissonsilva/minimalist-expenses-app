@@ -45,7 +45,4 @@ export const theme = extendTheme({
     body: "Barlow",
     mono: "Barlow",
   },
-  config: {
-    initialColorMode: "dark",
-  },
 });
