@@ -23,7 +23,7 @@ export function AppRoutes() {
         component={TabbedNavigation}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Adicionar Transação" component={AddExpense} />
+      <Stack.Screen name="Adicionar Despesa" component={AddExpense} />
     </Stack.Navigator>
   ) : (
     <LoginScreen />
