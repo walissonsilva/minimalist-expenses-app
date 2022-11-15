@@ -12,6 +12,8 @@ import { firebaseConfig } from "../../firebase.config";
 WebBrowser.maybeCompleteAuthSession();
 initializeApp(firebaseConfig);
 
+const GOOGLE_CLIENT_ID = process && process.env && process.env.GOOGLE_CLIENT_ID;
+
 interface IUser {
   id: string;
   name: string;
@@ -35,8 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [user, setUser] = useState({} as IUser);
   const [_, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId:
-      "943858046304-dr8n6c27fkbrncm9dknvmivitnivdanf.apps.googleusercontent.com",
+    clientId: GOOGLE_CLIENT_ID,
     scopes: ["profile", "email"],
   });
 

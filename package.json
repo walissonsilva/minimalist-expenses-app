@@ -16,6 +16,7 @@
     "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
     "@types/react-native-vector-icons": "^6.4.12",
+    "babel-plugin-inline-dotenv": "^1.7.0",
     "expo": "~47.0.3",
     "expo-auth-session": "^3.7.2",
     "expo-font": "~11.0.1",
