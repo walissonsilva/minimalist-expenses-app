@@ -14,10 +14,19 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export function AppRoutes() {
+  const { colors } = useTheme();
   const { userInfo } = useAuth();
 
   return userInfo.id ? (
-    <Stack.Navigator screenOptions={{ presentation: "modal" }}>
+    <Stack.Navigator
+      screenOptions={{
+        presentation: "modal",
+        headerStyle: {
+          backgroundColor: colors.emerald[500],
+        },
+        headerTintColor: colors.white,
+      }}
+    >
       <Stack.Screen
         name="App"
         component={TabbedNavigation}
@@ -31,17 +40,21 @@ export function AppRoutes() {
 }
 
 export const TabbedNavigation = () => {
-  const theme = useTheme();
+  const { colors } = useTheme();
 
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarIconStyle: {
-          color: theme.colors.primary[500],
+          color: colors.primary[500],
         },
         tabBarStyle: {
           paddingVertical: 6,
         },
+        headerStyle: {
+          backgroundColor: colors.emerald[500],
+        },
+        headerTintColor: colors.white,
       }}
     >
       <Tab.Group>
@@ -76,7 +89,7 @@ export const TabbedNavigation = () => {
               <Feather
                 name="list"
                 {...props}
-                color={props.focused ? theme.colors.emerald[500] : props.color}
+                color={props.focused ? colors.emerald[500] : props.color}
                 size={props.size - 2}
               />
             ),
@@ -84,9 +97,7 @@ export const TabbedNavigation = () => {
               <Text
                 {...props}
                 style={{
-                  color: props.focused
-                    ? theme.colors.emerald[500]
-                    : props.color,
+                  color: props.focused ? colors.emerald[500] : props.color,
                   fontSize: 11,
                 }}
               >
@@ -103,7 +114,7 @@ export const TabbedNavigation = () => {
               <Feather
                 name="bar-chart-2"
                 {...props}
-                color={props.focused ? theme.colors.emerald[500] : props.color}
+                color={props.focused ? colors.emerald[500] : props.color}
                 size={props.size - 2}
               />
             ),
@@ -111,9 +122,7 @@ export const TabbedNavigation = () => {
               <Text
                 {...props}
                 style={{
-                  color: props.focused
-                    ? theme.colors.emerald[500]
-                    : props.color,
+                  color: props.focused ? colors.emerald[500] : props.color,
                   fontSize: 11,
                 }}
               >
@@ -130,7 +139,7 @@ export const TabbedNavigation = () => {
               <Feather
                 name="user"
                 {...props}
-                color={props.focused ? theme.colors.emerald[500] : props.color}
+                color={props.focused ? colors.emerald[500] : props.color}
                 size={props.size - 2}
               />
             ),
@@ -138,9 +147,7 @@ export const TabbedNavigation = () => {
               <Text
                 {...props}
                 style={{
-                  color: props.focused
-                    ? theme.colors.emerald[500]
-                    : props.color,
+                  color: props.focused ? colors.emerald[500] : props.color,
                   fontSize: 11,
                 }}
               >

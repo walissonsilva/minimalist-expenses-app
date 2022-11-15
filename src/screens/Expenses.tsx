@@ -10,9 +10,9 @@ export const ExpensesScreen: React.FC = () => {
     <View flex={1} height="full">
       <Fab
         renderInPortal={false}
-        colorScheme="emerald"
+        bgColor="emerald.500"
         icon={<Icon as={<Feather name="plus" />} size="md" color="white" />}
-        onPress={() => navigation.navigate("Adicionar Transação" as never)}
+        onPress={() => navigation.navigate("Adicionar Despesa" as never)}
       />
 
       <FlatList
