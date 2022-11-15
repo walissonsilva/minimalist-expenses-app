@@ -11,7 +11,14 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
   date,
 }) => {
   return (
-    <Flex paddingX="6" paddingY="2" backgroundColor="white" marginTop="1">
+    <Flex
+      paddingX="6"
+      paddingY="2"
+      marginX={2}
+      backgroundColor="white"
+      marginTop="2"
+      rounded="md"
+    >
       <Flex flexDir="row" justifyContent="space-between" alignItems="center">
         <Text color="darkText" fontSize="lg" fontWeight="medium">
           {description}
