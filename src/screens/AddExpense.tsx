@@ -1,20 +1,15 @@
-import { Platform } from "react-native";
-import { Box, Flex, Radio, View } from "native-base";
-import { useNavigation } from "@react-navigation/native";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigation } from "@react-navigation/native";
+import { Box, Flex, Radio, View } from "native-base";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
+import { useFirebase } from "../hooks/useFirebase";
 import { addExpenseSchema } from "../schemas/addExpenseSchema";
+import { IExpense } from "../types/Expense";
 import { currencyMask, dateMask } from "../utils/masks";
 
-interface IFormData {
-  description: string;
-  amount: string;
-  date: string;
-  expiration: string;
-  type: "fixed" | "installments";
-}
+interface IFormData extends IExpense {}
 
 export const AddExpense: React.FC = () => {
   const {
@@ -24,9 +19,11 @@ export const AddExpense: React.FC = () => {
   } = useForm<IFormData>({
     resolver: yupResolver(addExpenseSchema),
   });
+  const { addExpense } = useFirebase();
   const navigation = useNavigation();
 
-  const onSubmit: SubmitHandler<IFormData> = (data) => {
+  const onSubmit: SubmitHandler<IFormData> = async (data: IExpense) => {
+    await addExpense(data);
     console.log(data);
 
     navigation.goBack();
@@ -60,7 +57,7 @@ export const AddExpense: React.FC = () => {
                 keyboardType="number-pad"
                 onBlur={field.onBlur}
                 onChangeText={(val) => field.onChange(currencyMask(val))}
-                value={field.value}
+                value={String(field.value || 0)}
                 errorMessage={errors.amount?.message}
                 isInvalid={Boolean(errors.amount?.message)}
               />

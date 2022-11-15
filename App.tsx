@@ -9,6 +9,7 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { AuthProvider } from "./src/hooks/useAuth";
+import { FirebaseProvider } from "./src/hooks/useFirebase";
 import { AppRoutes } from "./src/routes/app.routes";
 import { theme } from "./src/styles/theme";
 
@@ -28,9 +29,11 @@ export default function App() {
   return (
     <NativeBaseProvider theme={theme}>
       <AuthProvider>
-        <NavigationContainer>
-          <AppRoutes />
-        </NavigationContainer>
+        <FirebaseProvider>
+          <NavigationContainer>
+            <AppRoutes />
+          </NavigationContainer>
+        </FirebaseProvider>
       </AuthProvider>
 
       <StatusBar
