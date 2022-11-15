@@ -56,7 +56,7 @@ export const LoginScreen = () => {
       </Box>
 
       <Flex width="full" marginTop={6}>
-        <Input placeholder="E-mail" />
+        <Input placeholder="E-mail" textContentType="emailAddress" />
         <Input marginTop={4} placeholder="Senha" type="password" />
 
         <Button type="primary" marginTop={6}>

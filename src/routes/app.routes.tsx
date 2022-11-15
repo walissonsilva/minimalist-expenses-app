@@ -7,14 +7,33 @@ import Feather from "react-native-vector-icons/Feather";
 import { useTheme } from "native-base";
 import { Text } from "react-native";
 import { ExpensesScreen } from "../screens/Expenses";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { AddExpense } from "../screens/AddExpense";
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 export function AppRoutes() {
   const { userInfo } = useAuth();
-  const theme = useTheme();
 
   return userInfo.id ? (
+    <Stack.Navigator screenOptions={{ presentation: "modal" }}>
+      <Stack.Screen
+        name="App"
+        component={TabbedNavigation}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Adicionar Transação" component={AddExpense} />
+    </Stack.Navigator>
+  ) : (
+    <LoginScreen />
+  );
+}
+
+export const TabbedNavigation = () => {
+  const theme = useTheme();
+
+  return (
     <Tab.Navigator
       screenOptions={{
         tabBarIconStyle: {
@@ -25,7 +44,8 @@ export function AppRoutes() {
         },
       }}
     >
-      {/* <Tab.Screen
+      <Tab.Group>
+        {/* <Tab.Screen
         options={{
           tabBarIcon: (props) => (
             <Feather
@@ -50,83 +70,88 @@ export function AppRoutes() {
         name="Home"
         component={HomeScreen}
       /> */}
-      <Tab.Screen
-        options={{
-          tabBarIcon: (props) => (
-            <Feather
-              name="list"
-              {...props}
-              color={props.focused ? theme.colors.emerald[500] : props.color}
-              size={props.size - 2}
-            />
-          ),
-          tabBarLabel: (props) => (
-            <Text
-              {...props}
-              style={{
-                color: props.focused ? theme.colors.emerald[500] : props.color,
-                fontSize: 11,
-              }}
-            >
-              Lançamentos
-            </Text>
-          ),
-        }}
-        name="Lançamentos"
-        component={ExpensesScreen}
-      />
-      <Tab.Screen
-        options={{
-          tabBarIcon: (props) => (
-            <Feather
-              name="bar-chart-2"
-              {...props}
-              color={props.focused ? theme.colors.emerald[500] : props.color}
-              size={props.size - 2}
-            />
-          ),
-          tabBarLabel: (props) => (
-            <Text
-              {...props}
-              style={{
-                color: props.focused ? theme.colors.emerald[500] : props.color,
-                fontSize: 11,
-              }}
-            >
-              Gráficos
-            </Text>
-          ),
-        }}
-        name="Gráficos"
-        component={HomeScreen}
-      />
-      <Tab.Screen
-        options={{
-          tabBarIcon: (props) => (
-            <Feather
-              name="user"
-              {...props}
-              color={props.focused ? theme.colors.emerald[500] : props.color}
-              size={props.size - 2}
-            />
-          ),
-          tabBarLabel: (props) => (
-            <Text
-              {...props}
-              style={{
-                color: props.focused ? theme.colors.emerald[500] : props.color,
-                fontSize: 11,
-              }}
-            >
-              Perfil
-            </Text>
-          ),
-        }}
-        name="Perfil"
-        component={HomeScreen}
-      />
+        <Tab.Screen
+          options={{
+            tabBarIcon: (props) => (
+              <Feather
+                name="list"
+                {...props}
+                color={props.focused ? theme.colors.emerald[500] : props.color}
+                size={props.size - 2}
+              />
+            ),
+            tabBarLabel: (props) => (
+              <Text
+                {...props}
+                style={{
+                  color: props.focused
+                    ? theme.colors.emerald[500]
+                    : props.color,
+                  fontSize: 11,
+                }}
+              >
+                Lançamentos
+              </Text>
+            ),
+          }}
+          name="Lançamentos"
+          component={ExpensesScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: (props) => (
+              <Feather
+                name="bar-chart-2"
+                {...props}
+                color={props.focused ? theme.colors.emerald[500] : props.color}
+                size={props.size - 2}
+              />
+            ),
+            tabBarLabel: (props) => (
+              <Text
+                {...props}
+                style={{
+                  color: props.focused
+                    ? theme.colors.emerald[500]
+                    : props.color,
+                  fontSize: 11,
+                }}
+              >
+                Gráficos
+              </Text>
+            ),
+          }}
+          name="Gráficos"
+          component={HomeScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: (props) => (
+              <Feather
+                name="user"
+                {...props}
+                color={props.focused ? theme.colors.emerald[500] : props.color}
+                size={props.size - 2}
+              />
+            ),
+            tabBarLabel: (props) => (
+              <Text
+                {...props}
+                style={{
+                  color: props.focused
+                    ? theme.colors.emerald[500]
+                    : props.color,
+                  fontSize: 11,
+                }}
+              >
+                Perfil
+              </Text>
+            ),
+          }}
+          name="Perfil"
+          component={HomeScreen}
+        />
+      </Tab.Group>
     </Tab.Navigator>
-  ) : (
-    <LoginScreen />
   );
-}
+};
