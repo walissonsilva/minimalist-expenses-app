@@ -2,18 +2,21 @@ import {
   FormControl,
   IInputProps,
   Input as InputNativeBase,
-  Stack,
   WarningOutlineIcon,
 } from "native-base";
 
 interface InputProps extends IInputProps {
-  error?: string;
+  errorMessage?: string;
   label?: string;
 }
 
-export const Input: React.FC<InputProps> = ({ error, label, ...props }) => {
+export const Input: React.FC<InputProps> = ({
+  errorMessage,
+  label,
+  ...props
+}) => {
   return (
-    <FormControl>
+    <FormControl isInvalid={props.isInvalid}>
       {label && <FormControl.Label>{label}</FormControl.Label>}
       <InputNativeBase
         {...props}
@@ -28,13 +31,20 @@ export const Input: React.FC<InputProps> = ({ error, label, ...props }) => {
         _invalid={{
           color: "red.600",
           backgroundColor: "white",
+          borderColor: "red.600",
           _focus: { backgroundColor: "red.50" },
         }}
       />
 
-      {error && (
-        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-          {error}
+      {{ errorMessage } && (
+        <FormControl.ErrorMessage
+          _text={{
+            color: "red.500",
+          }}
+          marginTop={2}
+          leftIcon={<WarningOutlineIcon size="xs" />}
+        >
+          {errorMessage}
         </FormControl.ErrorMessage>
       )}
     </FormControl>
