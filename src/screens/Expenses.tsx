@@ -1,10 +1,25 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Fab, FlatList, Icon, View } from "native-base";
+import { useState } from "react";
 import Feather from "react-native-vector-icons/Feather";
 import { ExpenseCard } from "../components/ExpenseCard";
+import { useFirebase } from "../hooks/useFirebase";
+import { IExpense } from "../types/Expense";
 
 export const ExpensesScreen: React.FC = () => {
   const navigation = useNavigation();
+  const { getExpenses } = useFirebase();
+  const [expenses, setExpenses] = useState([] as IExpense[]);
+
+  useFocusEffect(() => {
+    async function loadExpenses() {
+      const expensesData = await getExpenses();
+
+      setExpenses(expensesData || []);
+    }
+
+    loadExpenses();
+  });
 
   return (
     <View flex={1} height="full">
@@ -16,16 +31,16 @@ export const ExpensesScreen: React.FC = () => {
       />
 
       <FlatList
-        data={[1, 2, 3, 4, 5]}
+        data={expenses}
         renderItem={({ item }) => (
           <ExpenseCard
-            description="Assaí"
-            amount={432.57}
-            category="Mercado"
-            date={new Date()}
+            description={item.description}
+            amount={item.amount}
+            category={item.category || ""}
+            date={item.date}
           />
         )}
-        keyExtractor={(item) => String(item)}
+        keyExtractor={(item) => item.id}
       />
     </View>
   );

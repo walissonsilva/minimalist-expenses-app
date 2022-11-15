@@ -6,13 +6,14 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import { Alert } from "react-native";
 import { app } from "../../firebase.config";
 import { IExpense } from "../types/Expense";
 import { useAuth } from "./useAuth";
 
 interface FirebaseContextProps {
+  getExpenses(): Promise<IExpense[] | undefined>;
   addExpense: (expense: IExpense) => Promise<void>;
 }
 
@@ -29,16 +30,30 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
 }) => {
   const { userInfo } = useAuth();
 
-  const expensesRef = doc(db, "expenses", userInfo.id);
+  const expensesRef = useMemo(() => {
+    return userInfo.id ? doc(db, "expenses", userInfo.id) : undefined;
+  }, [userInfo]);
 
   async function getExpenses() {
-    const data = await getDoc(expensesRef);
-    console.log(data);
+    if (!expensesRef) {
+      Alert.alert("É necessário estar logado para visualizar suas despesas.");
+      return;
+    }
+
+    try {
+      const expensesDoc = await getDoc(expensesRef);
+      const data = expensesDoc.data();
+
+      return data?.expenses;
+    } catch {
+      Alert.alert("Erro ao obter suas despesas.");
+    }
   }
 
   async function addExpense(expense: IExpense) {
-    if (!userInfo.id) {
+    if (!expensesRef) {
       Alert.alert("É necessário estar logado para adicionar uma despesa.");
+      return;
     }
 
     try {
@@ -63,6 +78,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
   return (
     <FirebaseContext.Provider
       value={{
+        getExpenses,
         addExpense,
       }}
     >

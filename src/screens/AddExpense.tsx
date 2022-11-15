@@ -23,8 +23,15 @@ export const AddExpense: React.FC = () => {
   const navigation = useNavigation();
 
   const onSubmit: SubmitHandler<IFormData> = async (data: IExpense) => {
-    await addExpense(data);
-    console.log(data);
+    const { date } = data;
+
+    const [day, month, year] = date.split("/");
+
+    await addExpense({
+      ...data,
+      date: new Date(`${year}-${month}-${day}T03:00:00.000Z`).toISOString(),
+      id: String(new Date().getTime()),
+    });
 
     navigation.goBack();
   };
