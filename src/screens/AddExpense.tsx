@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Box, Flex, Radio, View } from "native-base";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../components/Button";
@@ -19,19 +20,33 @@ export const AddExpense: React.FC = () => {
   } = useForm<IFormData>({
     resolver: yupResolver(addExpenseSchema),
   });
+  const queryClient = useQueryClient();
   const { addExpense } = useFirebase();
   const navigation = useNavigation();
+
+  const addExpenseMutation = useMutation({
+    mutationFn: async (newExpense: IExpense) => await addExpense(newExpense),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getExpenses"] });
+    },
+  });
 
   const onSubmit: SubmitHandler<IFormData> = async (data: IExpense) => {
     const { date } = data;
 
     const [day, month, year] = date.split("/");
+    const dateFormmated = new Date(
+      `${year}-${month}-${day}T03:00:00.000Z`
+    ).toISOString();
+    const id = String(new Date().getTime());
 
-    await addExpense({
+    const expense = {
       ...data,
-      date: new Date(`${year}-${month}-${day}T03:00:00.000Z`).toISOString(),
-      id: String(new Date().getTime()),
-    });
+      date: dateFormmated,
+      id,
+    };
+
+    await addExpenseMutation.mutateAsync(expense);
 
     navigation.goBack();
   };
@@ -143,7 +158,11 @@ export const AddExpense: React.FC = () => {
       </View>
 
       <Box>
-        <Button height="12" onPress={handleSubmit(onSubmit)}>
+        <Button
+          height="12"
+          onPress={handleSubmit(onSubmit)}
+          isLoading={addExpenseMutation.isLoading}
+        >
           Salvar
         </Button>
       </Box>
