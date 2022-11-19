@@ -1,3 +1,5 @@
+import "intl";
+import "intl/locale-data/jsonp/pt-BR";
 import {
   Barlow_300Light,
   Barlow_400Regular,

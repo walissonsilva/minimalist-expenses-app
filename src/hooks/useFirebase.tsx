@@ -1,10 +1,13 @@
 import {
   arrayUnion,
+  collection,
   doc,
-  getDoc,
+  getDocs,
   getFirestore,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { createContext, useContext, useMemo } from "react";
 import { Alert } from "react-native";
@@ -41,10 +44,18 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     }
 
     try {
-      const expensesDoc = await getDoc(expensesRef);
-      const data = expensesDoc.data();
+      const q = query(
+        collection(db, "expenses"),
+        where("userId", "==", userInfo.email)
+      );
+      const querySnapshot = await getDocs(q);
 
-      return data?.expenses;
+      let expenses: IExpense[] = [];
+      querySnapshot.forEach((doc) => {
+        expenses.push(doc.data() as IExpense);
+      });
+
+      return expenses;
     } catch {
       Alert.alert("Erro ao obter suas despesas.");
     }
@@ -56,23 +67,10 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
       return;
     }
 
-    try {
-      await updateDoc(expensesRef, {
-        expenses: arrayUnion(expense),
-      });
-    } catch (err: any) {
-      if (err.code === "not-found") {
-        try {
-          await setDoc(expensesRef, {
-            expenses: [expense],
-          });
-        } catch {
-          Alert.alert("Erro ao salvar despesa");
-        }
-      } else {
-        Alert.alert("Erro ao salvar despesa");
-      }
-    }
+    await setDoc(doc(db, "expenses", expense.id), {
+      userId: userInfo.email,
+      ...expense,
+    });
   }
 
   return (

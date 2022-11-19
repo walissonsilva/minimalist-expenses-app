@@ -4,6 +4,8 @@ export interface IExpense {
   amount: number;
   category: string;
   date: string;
+  month: string;
+  year: number;
   type?: "fixed" | "installments";
   expiration?: Date;
 }

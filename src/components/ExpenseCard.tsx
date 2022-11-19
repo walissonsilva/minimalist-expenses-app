@@ -1,6 +1,6 @@
 import { Flex, Text } from "native-base";
 import { IExpense } from "../types/Expense";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../utils/date";
 
 type ExpenseCardProps = Omit<IExpense, "id">;
 
@@ -20,7 +20,7 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
       rounded="md"
     >
       <Flex flexDir="row" justifyContent="space-between" alignItems="center">
-        <Text color="darkText" fontSize="lg" fontWeight="medium">
+        <Text color="darkText" fontSize="lg" fontWeight="normal">
           {description}
         </Text>
 

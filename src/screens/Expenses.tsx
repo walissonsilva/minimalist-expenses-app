@@ -1,19 +1,43 @@
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Fab, FlatList, Icon, Spinner, View } from "native-base";
+import { addMonths, format, setDate } from "date-fns";
+import {
+  Box,
+  Fab,
+  FlatList,
+  Flex,
+  Icon,
+  Pressable,
+  Spinner,
+  Text,
+  View,
+} from "native-base";
+import { useMemo, useState } from "react";
 import Feather from "react-native-vector-icons/Feather";
 import { ExpenseCard } from "../components/ExpenseCard";
 import { useFirebase } from "../hooks/useFirebase";
+import { IExpense } from "../types/Expense";
+import { filterExpensesByMonth } from "../utils/filterExpenses";
 
 export const ExpensesScreen: React.FC = () => {
   const navigation = useNavigation();
   const { getExpenses } = useFirebase();
+  const [monthSelected, setMonthSelected] = useState(setDate(new Date(), 1));
 
   const { isLoading, data } = useQuery(["getExpenses"], {
-    queryFn: getExpenses,
+    queryFn: async () => await getExpenses(),
     refetchOnWindowFocus: "always",
     staleTime: Infinity,
   });
+
+  const expenses: IExpense[] = useMemo(() => {
+    return filterExpensesByMonth(data || [], monthSelected);
+  }, [monthSelected]);
+
+  function handleUpdateMonthSelected(step: -1 | 1) {
+    const newMonthSelected = addMonths(monthSelected, step);
+    setMonthSelected(newMonthSelected);
+  }
 
   return (
     <View flex={1} height="full">
@@ -30,14 +54,35 @@ export const ExpensesScreen: React.FC = () => {
             onPress={() => navigation.navigate("Adicionar Despesa" as never)}
           />
 
+          <Flex
+            flexDir="row"
+            justifyContent="center"
+            alignItems="center"
+            pt={4}
+            pb={2}
+          >
+            <Pressable onPress={() => handleUpdateMonthSelected(-1)}>
+              <Feather name="chevron-left" size={20} />
+            </Pressable>
+            <Text fontSize={18} lineHeight={20} width="40" textAlign="center">
+              {format(monthSelected, "LLLL yyyy")}
+            </Text>
+
+            <Pressable onPress={() => handleUpdateMonthSelected(1)}>
+              <Feather name="chevron-right" size={20} />
+            </Pressable>
+          </Flex>
+
           <FlatList
-            data={data}
+            data={expenses}
             renderItem={({ item }) => (
               <ExpenseCard
                 description={item.description}
                 amount={item.amount}
                 category={item.category || ""}
                 date={item.date}
+                month={item.month}
+                year={item.year}
               />
             )}
             keyExtractor={(item) => item.id}

@@ -8,6 +8,7 @@ import { Input } from "../components/Input";
 import { useFirebase } from "../hooks/useFirebase";
 import { addExpenseSchema } from "../schemas/addExpenseSchema";
 import { IExpense } from "../types/Expense";
+import { getMonthName, getYear } from "../utils/date";
 import { currencyMask, dateMask } from "../utils/masks";
 
 interface IFormData extends IExpense {}
@@ -44,6 +45,8 @@ export const AddExpense: React.FC = () => {
       ...data,
       date: dateFormmated,
       id,
+      month: getMonthName(dateFormmated),
+      year: getYear(dateFormmated),
     };
 
     await addExpenseMutation.mutateAsync(expense);
