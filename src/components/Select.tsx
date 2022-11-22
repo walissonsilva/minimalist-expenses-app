@@ -5,6 +5,7 @@ import {
   Select as SelectNativeBase,
   WarningOutlineIcon,
 } from "native-base";
+import { Platform } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 
 export interface ISelectItem {
@@ -48,6 +49,9 @@ export const Select: React.FC<SelectProps> = ({
           endIcon: (
             <Icon as={Feather} name="check" mt={1} size={4} color="white" />
           ),
+        }}
+        _actionSheet={{
+          useRNModal: Platform.OS === "ios",
         }}
         dropdownIcon={<Icon as={Feather} name="chevron-down" size={4} mr={2} />}
         borderWidth={1}

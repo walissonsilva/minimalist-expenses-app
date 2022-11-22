@@ -8,11 +8,14 @@ import {
   signInWithCredential,
 } from "firebase/auth";
 import { firebaseConfig } from "../../firebase.config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 WebBrowser.maybeCompleteAuthSession();
 initializeApp(firebaseConfig);
 
 const GOOGLE_CLIENT_ID = process && process.env && process.env.GOOGLE_CLIENT_ID;
+
+const AUTH_ASYNC_STORAGE_KEY = "auth:user";
 
 interface IUser {
   id: string;
@@ -48,7 +51,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   async function signOut() {
     setUser({} as IUser);
+    await AsyncStorage.removeItem(AUTH_ASYNC_STORAGE_KEY);
   }
+
+  useEffect(() => {
+    async function loadUserFromAsyncStorage() {
+      const userDataFromStorage = await AsyncStorage.getItem(
+        AUTH_ASYNC_STORAGE_KEY
+      );
+
+      if (userDataFromStorage) {
+        const userData = JSON.parse(userDataFromStorage);
+        setUser(userData);
+      }
+    }
+
+    loadUserFromAsyncStorage();
+  }, []);
 
   useEffect(() => {
     async function getGoogleData() {
@@ -60,12 +79,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const result = await signInWithCredential(auth, credential);
           const { user } = result;
 
-          setUser({
+          const userData = {
             id: user.uid,
             email: String(user.email),
             name: String(user.displayName),
             avatarUrl: String(user.photoURL),
-          });
+          };
+
+          setUser(userData);
+          await AsyncStorage.setItem(
+            AUTH_ASYNC_STORAGE_KEY,
+            JSON.stringify(userData)
+          );
         } catch (err) {
           console.log(err);
         }
@@ -74,7 +99,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoggingIn(false);
     }
 
-    getGoogleData();
+    if (!user.id) {
+      getGoogleData();
+    }
   }, [response]);
 
   return (
