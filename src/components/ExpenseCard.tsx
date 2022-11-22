@@ -1,10 +1,18 @@
-import { Box, Flex, Icon, Text } from "native-base";
+import {
+  Actionsheet,
+  Box,
+  Flex,
+  Icon,
+  Pressable,
+  Text,
+  useDisclose,
+} from "native-base";
 import { categories } from "../constants/categories";
 import { IExpense } from "../types/Expense";
 import { formatDate } from "../utils/date";
 import Feather from "react-native-vector-icons/Feather";
 
-type ExpenseCardProps = Omit<IExpense, "id">;
+type ExpenseCardProps = Omit<IExpense, "month" | "year">;
 
 export const ExpenseCard: React.FC<ExpenseCardProps> = ({
   description,
@@ -12,6 +20,8 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
   category,
   date,
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclose();
+
   function getCategoryColor() {
     const categoryColor = categories.find((c) => c.title === category)?.color;
 
@@ -25,13 +35,14 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
   }
 
   return (
-    <Flex
+    <Pressable
       paddingX="6"
       paddingY="2"
       marginX={2}
       backgroundColor="white"
       marginTop="2"
       rounded="md"
+      onPress={onOpen}
     >
       <Flex flexDir="row" justifyContent="space-between" alignItems="center">
         <Text color="darkText" fontSize="lg" fontWeight="normal">
@@ -63,6 +74,45 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
         </Flex>
         <Text color="gray.400">{formatDate(new Date(date))}</Text>
       </Flex>
-    </Flex>
+
+      <Actionsheet isOpen={isOpen} onClose={onClose}>
+        <Actionsheet.Content>
+          <Box
+            w="100%"
+            h={60}
+            px={4}
+            mb={2}
+            justifyContent="center"
+            borderBottomColor="gray.200"
+            borderBottomWidth={1}
+          >
+            <Text
+              fontSize="16"
+              color="gray.800"
+              fontWeight={500}
+              textTransform="uppercase"
+            >
+              {description}
+            </Text>
+          </Box>
+          <Actionsheet.Item
+            startIcon={<Icon as={Feather} name="edit" mt={1} />}
+          >
+            Editar
+          </Actionsheet.Item>
+          <Actionsheet.Item
+            startIcon={<Icon as={Feather} name="trash" mt={1} />}
+            _text={{
+              color: "red.600",
+            }}
+            _icon={{
+              color: "red.600",
+            }}
+          >
+            Deletar
+          </Actionsheet.Item>
+        </Actionsheet.Content>
+      </Actionsheet>
+    </Pressable>
   );
 };

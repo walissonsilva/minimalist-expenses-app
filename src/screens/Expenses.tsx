@@ -89,12 +89,11 @@ export const ExpensesScreen: React.FC = () => {
             data={expenses}
             renderItem={({ item }) => (
               <ExpenseCard
+                id={item.id}
                 description={item.description}
                 amount={item.amount}
                 category={item.category || ""}
                 date={item.date}
-                month={item.month}
-                year={item.year}
               />
             )}
             keyExtractor={(item) => item.id}
