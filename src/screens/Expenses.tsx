@@ -24,7 +24,7 @@ export const ExpensesScreen: React.FC = () => {
   const { getExpenses } = useFirebase();
   const [monthSelected, setMonthSelected] = useState(setDate(new Date(), 1));
 
-  const { isLoading, data } = useQuery(["getExpenses"], {
+  const { isLoading, data, isFetching } = useQuery(["getExpenses"], {
     queryFn: async () => await getExpenses(),
     refetchOnWindowFocus: "always",
     staleTime: Infinity,
@@ -32,7 +32,7 @@ export const ExpensesScreen: React.FC = () => {
 
   const expenses: IExpense[] = useMemo(() => {
     return filterExpensesByMonth(data || [], monthSelected);
-  }, [monthSelected]);
+  }, [monthSelected, filterExpensesByMonth, data]);
 
   function handleUpdateMonthSelected(step: -1 | 1) {
     const newMonthSelected = addMonths(monthSelected, step);
@@ -41,7 +41,7 @@ export const ExpensesScreen: React.FC = () => {
 
   return (
     <View flex={1} height="full">
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <Box flex={1} justifyContent="center" alignItems="center">
           <Spinner size="lg" />
         </Box>
