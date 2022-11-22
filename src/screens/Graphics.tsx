@@ -9,7 +9,7 @@ import { useFirebase } from "../hooks/useFirebase";
 import { IExpense } from "../types/Expense";
 import { filterExpensesByMonth } from "../utils/filterExpenses";
 
-export const ExpensesScreen: React.FC = () => {
+export const GraphicsScreen: React.FC = () => {
   const navigation = useNavigation();
   const { getExpenses, deleteExpense } = useFirebase();
   const [monthSelected, setMonthSelected] = useState(setDate(new Date(), 1));

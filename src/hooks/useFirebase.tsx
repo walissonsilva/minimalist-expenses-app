@@ -1,6 +1,7 @@
 import {
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   getFirestore,
@@ -9,6 +10,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { useToast } from "native-base";
 import { createContext, useContext, useMemo } from "react";
 import { Alert } from "react-native";
 import { app } from "../../firebase.config";
@@ -19,6 +21,7 @@ import { useAuth } from "./useAuth";
 interface FirebaseContextProps {
   getExpenses(): Promise<IExpense[] | undefined>;
   addExpense: (expense: IExpense) => Promise<void>;
+  deleteExpense(expenseId: string): Promise<void>;
 }
 
 const FirebaseContext = createContext({} as FirebaseContextProps);
@@ -33,6 +36,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
   children,
 }) => {
   const { userInfo } = useAuth();
+  const toast = useToast();
 
   const expensesRef = useMemo(() => {
     return userInfo.id ? doc(db, "expenses", userInfo.id) : undefined;
@@ -75,11 +79,38 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     });
   }
 
+  async function deleteExpense(expenseId: string) {
+    if (!expensesRef) {
+      Alert.alert("É necessário estar logado para adicionar uma despesa.");
+      return;
+    }
+
+    try {
+      await deleteDoc(doc(db, "expenses", expenseId));
+      toast.show({
+        description: "Despesa removida com sucesso!",
+        backgroundColor: "emerald.700",
+        color: "white",
+        marginBottom: "10",
+        duration: 3000,
+      });
+    } catch {
+      toast.show({
+        description: "Não foi possível remover despesa",
+        backgroundColor: "red.600",
+        color: "white",
+        marginBottom: "10",
+        duration: 3000,
+      });
+    }
+  }
+
   return (
     <FirebaseContext.Provider
       value={{
         getExpenses,
         addExpense,
+        deleteExpense,
       }}
     >
       {children}

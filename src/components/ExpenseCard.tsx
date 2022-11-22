@@ -4,23 +4,42 @@ import {
   Flex,
   Icon,
   Pressable,
+  Skeleton,
   Text,
   useDisclose,
+  useToast,
 } from "native-base";
 import { categories } from "../constants/categories";
 import { IExpense } from "../types/Expense";
 import { formatDate } from "../utils/date";
 import Feather from "react-native-vector-icons/Feather";
+import { Alert } from "react-native";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type ExpenseCardProps = Omit<IExpense, "month" | "year">;
+type ExpenseCardProps = Omit<IExpense, "month" | "year"> & {
+  deleteExpense(expenseId: string): Promise<void>;
+};
 
 export const ExpenseCard: React.FC<ExpenseCardProps> = ({
+  id,
   description,
   amount,
   category,
   date,
+  deleteExpense,
 }) => {
+  const queryClient = useQueryClient();
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclose();
+
+  const { isLoading, mutateAsync: deleteExpenseMutation } = useMutation({
+    mutationFn: async () => {
+      await deleteExpense(id);
+    },
+    onSuccess: () => {
+      onClose();
+    },
+  });
 
   function getCategoryColor() {
     const categoryColor = categories.find((c) => c.title === category)?.color;
@@ -32,6 +51,29 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
     const categoryIcon = categories.find((c) => c.title === category)?.icon;
 
     return categoryIcon ?? "help";
+  }
+
+  async function handleRemoveExpense() {
+    Alert.prompt(
+      "Remover despesa",
+      `Tem certeza que deseja remover a despesa "${description}"?`,
+      [
+        { text: "Não", onPress: () => onClose() },
+        {
+          text: "Sim",
+          onPress: async () => {
+            onClose();
+            await deleteExpenseMutation();
+            await queryClient.invalidateQueries({ queryKey: ["getExpenses"] });
+          },
+        },
+      ],
+      "default"
+    );
+  }
+
+  if (isLoading) {
+    return <ExpenseCardLoader />;
   }
 
   return (
@@ -97,6 +139,16 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
           </Box>
           <Actionsheet.Item
             startIcon={<Icon as={Feather} name="edit" mt={1} />}
+            onPress={() => {
+              toast.show({
+                description: "Em breve...",
+                backgroundColor: "blue.700",
+                color: "white",
+                marginBottom: "10",
+                duration: 3000,
+              });
+              onClose();
+            }}
           >
             Editar
           </Actionsheet.Item>
@@ -108,11 +160,26 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
             _icon={{
               color: "red.600",
             }}
+            onPress={handleRemoveExpense}
           >
-            Deletar
+            Remover
           </Actionsheet.Item>
         </Actionsheet.Content>
       </Actionsheet>
     </Pressable>
   );
 };
+
+export function ExpenseCardLoader() {
+  return (
+    <Skeleton
+      h="16"
+      paddingX="3"
+      paddingY="0"
+      marginTop="3"
+      rounded="lg"
+      startColor="gray.300"
+      endColor="gray.100"
+    />
+  );
+}

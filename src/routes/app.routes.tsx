@@ -9,6 +9,7 @@ import { Text } from "react-native";
 import { ExpensesScreen } from "../screens/Expenses";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AddExpense } from "../screens/AddExpense";
+import { GraphicsScreen } from "../screens/Graphics";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -131,7 +132,7 @@ export const TabbedNavigation = () => {
             ),
           }}
           name="Gráficos"
-          component={HomeScreen}
+          component={GraphicsScreen}
         />
         <Tab.Screen
           options={{
