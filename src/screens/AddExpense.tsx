@@ -2,9 +2,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Box, Flex, Radio, View } from "native-base";
+import { useMemo } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
+import { Select } from "../components/Select";
+import { categories } from "../constants/categories";
 import { useFirebase } from "../hooks/useFirebase";
 import { addExpenseSchema } from "../schemas/addExpenseSchema";
 import { IExpense } from "../types/Expense";
@@ -24,6 +27,14 @@ export const AddExpense: React.FC = () => {
   const queryClient = useQueryClient();
   const { addExpense } = useFirebase();
   const navigation = useNavigation();
+
+  const categoryOptions = useMemo(() => {
+    return categories.map((category) => ({
+      label: category.title,
+      value: category.title,
+      icon: category.icon,
+    }));
+  }, [categories]);
 
   const addExpenseMutation = useMutation({
     mutationFn: async (newExpense: IExpense) => await addExpense(newExpense),
@@ -103,6 +114,22 @@ export const AddExpense: React.FC = () => {
                 value={field.value}
                 errorMessage={errors.date?.message}
                 isInvalid={Boolean(errors.date?.message)}
+              />
+            )}
+          />
+        </Box>
+        <Box marginTop={2}>
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <Select
+                label="Categoria"
+                onValueChange={(val) => field.onChange(val)}
+                selectedValue={field.value}
+                errorMessage={errors.date?.message}
+                options={categoryOptions}
+                isInvalid={Boolean(errors.category?.message)}
               />
             )}
           />

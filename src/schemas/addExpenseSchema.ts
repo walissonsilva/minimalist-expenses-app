@@ -15,6 +15,7 @@ export const addExpenseSchema = yup
       .string()
       .min(10, "Data inválida (dd/mm/yyyy)")
       .required("Campo obrigatório"),
+    category: yup.string().required("Campo obrigatório"),
     type: yup.string().optional(),
   })
   .required();
