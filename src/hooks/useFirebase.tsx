@@ -13,6 +13,7 @@ import { createContext, useContext, useMemo } from "react";
 import { Alert } from "react-native";
 import { app } from "../../firebase.config";
 import { IExpense } from "../types/Expense";
+import { orderExpensesByDate } from "../utils/orderExpenses";
 import { useAuth } from "./useAuth";
 
 interface FirebaseContextProps {
@@ -55,7 +56,8 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
         expenses.push(doc.data() as IExpense);
       });
 
-      return expenses;
+      const expensesOrderedByDate = orderExpensesByDate(expenses);
+      return expensesOrderedByDate;
     } catch {
       Alert.alert("Erro ao obter suas despesas.");
     }

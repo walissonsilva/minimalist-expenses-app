@@ -62,14 +62,26 @@ export const ExpensesScreen: React.FC = () => {
             pb={2}
           >
             <Pressable onPress={() => handleUpdateMonthSelected(-1)}>
-              <Feather name="chevron-left" size={20} />
+              <Icon
+                as={Feather}
+                name="chevron-left"
+                minW={12}
+                size={5}
+                textAlign="center"
+              />
             </Pressable>
-            <Text fontSize={18} lineHeight={20} width="40" textAlign="center">
+            <Text fontSize={18} lineHeight={20} textAlign="center">
               {format(monthSelected, "LLLL yyyy")}
             </Text>
 
             <Pressable onPress={() => handleUpdateMonthSelected(1)}>
-              <Feather name="chevron-right" size={20} />
+              <Icon
+                as={Feather}
+                name="chevron-right"
+                minW={12}
+                size={5}
+                textAlign="center"
+              />
             </Pressable>
           </Flex>
 
