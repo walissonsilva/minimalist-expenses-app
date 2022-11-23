@@ -50,6 +50,10 @@ export const GraphicsScreen: React.FC = () => {
     return filterExpensesByMonth(data || [], monthSelected);
   }, [monthSelected, filterExpensesByMonth, data]);
 
+  const totalExpenses = useMemo(() => {
+    return expenses.reduce((total, expense) => total + expense.amount, 0);
+  }, [expenses]);
+
   const expensesGroupedByCategory = useMemo(() => {
     if (!expenses) return [];
 
@@ -134,7 +138,13 @@ export const GraphicsScreen: React.FC = () => {
                 duration: 150,
               }}
               width={300}
-              labels={[]}
+              labels={expensesGroupedByCategory.map(
+                (expenseCategory) =>
+                  `${((expenseCategory.y / totalExpenses) * 100).toFixed(0)}%`
+              )}
+              innerRadius={50}
+              labelRadius={({ innerRadius }) => Number(innerRadius) + 30}
+              padding={{ top: 20, bottom: 90 }}
             />
           </View>
 
