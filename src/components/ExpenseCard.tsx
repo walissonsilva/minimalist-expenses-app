@@ -15,6 +15,7 @@ import { formatDate } from "../utils/date";
 import Feather from "react-native-vector-icons/Feather";
 import { Alert } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getCategoryColor, getCategoryIcon } from "../utils/categories";
 
 type ExpenseCardProps = Omit<IExpense, "month" | "year"> & {
   deleteExpense(expenseId: string): Promise<void>;
@@ -40,18 +41,6 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
       onClose();
     },
   });
-
-  function getCategoryColor() {
-    const categoryColor = categories.find((c) => c.title === category)?.color;
-
-    return categoryColor ?? "emerald.700";
-  }
-
-  function getCategoryIcon() {
-    const categoryIcon = categories.find((c) => c.title === category)?.icon;
-
-    return categoryIcon ?? "help";
-  }
 
   async function handleRemoveExpense() {
     Alert.prompt(
@@ -105,12 +94,16 @@ export const ExpenseCard: React.FC<ExpenseCardProps> = ({
         <Flex flexDir="row" alignItems="center">
           <Icon
             as={Feather}
-            name={getCategoryIcon()}
+            name={getCategoryIcon(category)}
             size={3}
-            color={getCategoryColor()}
+            color={getCategoryColor(category)}
             mr={1}
           />
-          <Text color={getCategoryColor()} fontSize="sm" fontWeight={500}>
+          <Text
+            color={getCategoryColor(category)}
+            fontSize="sm"
+            fontWeight={500}
+          >
             {category}
           </Text>
         </Flex>
