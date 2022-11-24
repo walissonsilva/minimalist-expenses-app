@@ -143,7 +143,7 @@ export const GraphicsScreen: React.FC = () => {
                   `${((expenseCategory.y / totalExpenses) * 100).toFixed(0)}%`
               )}
               innerRadius={50}
-              labelRadius={({ innerRadius }) => Number(innerRadius) + 30}
+              labelRadius={({ innerRadius }) => Number(innerRadius) + 60}
               padding={{ top: 20, bottom: 90 }}
             />
           </View>

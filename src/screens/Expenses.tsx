@@ -1,7 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { addMonths, format, setDate } from "date-fns";
-import { Fab, FlatList, Flex, Icon, Pressable, Text, View } from "native-base";
+import {
+  Box,
+  Fab,
+  FlatList,
+  Flex,
+  Icon,
+  Pressable,
+  Text,
+  View,
+} from "native-base";
 import { useMemo, useState } from "react";
 import Feather from "react-native-vector-icons/Feather";
 import { ExpenseCard, ExpenseCardLoader } from "../components/ExpenseCard";
@@ -24,6 +33,10 @@ export const ExpensesScreen: React.FC = () => {
     return filterExpensesByMonth(data || [], monthSelected);
   }, [monthSelected, filterExpensesByMonth, data]);
 
+  const totalExpenses = useMemo(() => {
+    return expenses.reduce((total, expense) => total + expense.amount, 0);
+  }, [expenses]);
+
   function handleUpdateMonthSelected(step: -1 | 1) {
     const newMonthSelected = addMonths(monthSelected, step);
     setMonthSelected(newMonthSelected);
@@ -41,6 +54,7 @@ export const ExpensesScreen: React.FC = () => {
         <>
           <Fab
             renderInPortal={false}
+            mb={9}
             bgColor="emerald.500"
             icon={<Icon as={<Feather name="plus" />} size="md" color="white" />}
             onPress={() => navigation.navigate("Adicionar Despesa" as never)}
@@ -91,6 +105,27 @@ export const ExpensesScreen: React.FC = () => {
             )}
             keyExtractor={(item) => item.id}
           />
+
+          <Box
+            position="fixed"
+            bottom={0}
+            h={10}
+            left={0}
+            w="full"
+            bg="emerald.500"
+            display="flex"
+            flexDir="row"
+            justifyContent="space-between"
+            alignItems="center"
+            px={4}
+          >
+            <Text color="white" fontSize={18} fontWeight={600}>
+              Total
+            </Text>
+            <Text color="white" fontSize={18} fontWeight={600}>
+              {`R$ ${totalExpenses.toFixed(2).replace(".", ",")}`}
+            </Text>
+          </Box>
         </>
       )}
     </View>
