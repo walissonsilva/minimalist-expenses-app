@@ -25,7 +25,7 @@ export function AppRoutes() {
         screenOptions={{
           presentation: "modal",
           headerStyle: {
-            backgroundColor: colors.secondary[500],
+            backgroundColor: colors.primary[500],
           },
           headerTintColor: colors.white,
         }}
@@ -57,7 +57,7 @@ export const TabbedNavigation = () => {
           paddingVertical: 6,
         },
         headerStyle: {
-          backgroundColor: colors.secondary[500],
+          backgroundColor: colors.primary[500],
         },
         headerTintColor: colors.white,
       }}
@@ -69,7 +69,7 @@ export const TabbedNavigation = () => {
               <Feather
                 name="home"
                 {...props}
-                color={props.focused ? colors.secondary[500] : props.color}
+                color={props.focused ? colors.primary[500] : props.color}
                 size={props.size - 2}
               />
             ),
@@ -77,7 +77,7 @@ export const TabbedNavigation = () => {
               <Text
                 {...props}
                 style={{
-                  color: props.focused ? colors.secondary[500] : props.color,
+                  color: props.focused ? colors.primary[500] : props.color,
                   fontSize: 10,
                 }}
               >
@@ -94,7 +94,7 @@ export const TabbedNavigation = () => {
               <Feather
                 name="list"
                 {...props}
-                color={props.focused ? colors.secondary[500] : props.color}
+                color={props.focused ? colors.primary[500] : props.color}
                 size={props.size - 2}
               />
             ),
@@ -102,7 +102,7 @@ export const TabbedNavigation = () => {
               <Text
                 {...props}
                 style={{
-                  color: props.focused ? colors.secondary[500] : props.color,
+                  color: props.focused ? colors.primary[500] : props.color,
                   fontSize: 11,
                 }}
               >
@@ -116,7 +116,7 @@ export const TabbedNavigation = () => {
                 display="flex"
                 justifyContent="center"
                 marginRight={1}
-                backgroundColor="secondary.400"
+                backgroundColor="primary.400"
                 onPress={() =>
                   navigation.navigate("Adicionar Despesa" as never)
                 }
@@ -134,7 +134,7 @@ export const TabbedNavigation = () => {
               <Feather
                 name="list"
                 {...props}
-                color={props.focused ? colors.secondary[500] : props.color}
+                color={props.focused ? colors.primary[500] : props.color}
                 size={props.size - 2}
               />
             ),
@@ -142,7 +142,7 @@ export const TabbedNavigation = () => {
               <Text
                 {...props}
                 style={{
-                  color: props.focused ? colors.secondary[500] : props.color,
+                  color: props.focused ? colors.primary[500] : props.color,
                   fontSize: 11,
                 }}
               >
@@ -159,7 +159,7 @@ export const TabbedNavigation = () => {
               <Feather
                 name="bar-chart-2"
                 {...props}
-                color={props.focused ? colors.secondary[500] : props.color}
+                color={props.focused ? colors.primary[500] : props.color}
                 size={props.size - 2}
               />
             ),
@@ -167,7 +167,7 @@ export const TabbedNavigation = () => {
               <Text
                 {...props}
                 style={{
-                  color: props.focused ? colors.secondary[500] : props.color,
+                  color: props.focused ? colors.primary[500] : props.color,
                   fontSize: 11,
                 }}
               >
@@ -184,7 +184,7 @@ export const TabbedNavigation = () => {
               <Feather
                 name="user"
                 {...props}
-                color={props.focused ? colors.secondary[500] : props.color}
+                color={props.focused ? colors.primary[500] : props.color}
                 size={props.size - 2}
               />
             ),
@@ -192,7 +192,7 @@ export const TabbedNavigation = () => {
               <Text
                 {...props}
                 style={{
-                  color: props.focused ? colors.secondary[500] : props.color,
+                  color: props.focused ? colors.primary[500] : props.color,
                   fontSize: 11,
                 }}
               >
