@@ -87,12 +87,12 @@ export const GraphicsScreen: React.FC = () => {
   return (
     <View flex={1} height="full">
       {isLoading || isFetching ? (
-        <Spinner colorScheme="emerald" size="lg" />
+        <Spinner colorScheme="primary" size="lg" />
       ) : (
         <>
           <Fab
             renderInPortal={false}
-            bgColor="emerald.500"
+            bgColor="primary.500"
             icon={<Icon as={<Feather name="plus" />} size="md" color="white" />}
             onPress={() => navigation.navigate("Adicionar Despesa" as never)}
           />

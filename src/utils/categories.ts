@@ -5,7 +5,7 @@ export function getCategoryColor(categoryTitle: string) {
     (c) => c.title === categoryTitle
   )?.color;
 
-  return categoryColor ?? "emerald.700";
+  return categoryColor ?? "primary.700";
 }
 
 export function getCategoryIcon(categoryTitle: string) {

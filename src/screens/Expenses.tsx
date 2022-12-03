@@ -52,14 +52,6 @@ export const ExpensesScreen: React.FC = () => {
         </Flex>
       ) : (
         <>
-          <Fab
-            renderInPortal={false}
-            mb={9}
-            bgColor="emerald.500"
-            icon={<Icon as={<Feather name="plus" />} size="md" color="white" />}
-            onPress={() => navigation.navigate("Adicionar Despesa" as never)}
-          />
-
           <Flex
             flexDir="row"
             justifyContent="center"
@@ -112,7 +104,7 @@ export const ExpensesScreen: React.FC = () => {
             h={10}
             left={0}
             w="full"
-            bg="emerald.500"
+            bg="primary.500"
             display="flex"
             flexDir="row"
             justifyContent="space-between"

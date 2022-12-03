@@ -13,7 +13,7 @@ export const Button: React.FC<ButtonProps> = ({
   function getBackground(): string {
     switch (type) {
       case "primary":
-        return "emerald.500";
+        return "primary.500";
       case "secondary":
         return "secondary.500";
       default:

@@ -38,7 +38,7 @@ export const Select: React.FC<SelectProps> = ({
         fontSize="sm"
         backgroundColor="white"
         _selectedItem={{
-          bg: "emerald.600",
+          bg: "primary.600",
           _text: {
             color: "white",
             fontWeight: 600,

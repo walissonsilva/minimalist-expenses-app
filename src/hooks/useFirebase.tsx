@@ -89,7 +89,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
       await deleteDoc(doc(db, "expenses", expenseId));
       toast.show({
         description: "Despesa removida com sucesso!",
-        backgroundColor: "emerald.700",
+        backgroundColor: "primary.700",
         color: "white",
         marginBottom: "10",
         duration: 3000,
